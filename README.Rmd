@@ -1,0 +1,41 @@
+---
+title: "433 HW 1"
+author: "Juliana Brandt"
+date: "2/4/2021"
+output: github_document
+---
+ 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(dplyr)
+library(tidyverse)
+```
+ 
+ 
+Warm up: make a file with bridge ID, year, fips codes, condition ratings, and a few other variables that interest you. Make your code reproducible. Make a plot. Things to do first: (i) look at a few lines of the raw data, (ii) look at the data description. Work independently, in small groups. (Share ideas and functions, but not code)
+ 
+```{r, warning = FALSE, results='FALSE'}
+#Loading the dataset from url and viewing the first 5 rows of the dataset  
+CA15 = read_csv("https://www.fhwa.dot.gov/bridge/nbi/2015/delimited/CA15.txt")
+```
+ 
+```{r}
+#creating a smaller dataset with bridge ID, year, fips codes, condition ratings, and a few other variables that interested me
+ 
+small.CA15 = CA15 %>% select(STRUCTURE_NUMBER_008, YEAR_BUILT_027,  COUNTY_CODE_003, 
+         SUPERSTRUCTURE_COND_059, SUBSTRUCTURE_COND_060, CHANNEL_COND_061, 
+         CULVERT_COND_062, OPR_RATING_METH_063, OPERATING_RATING_064, INV_RATING_METH_065, 
+         INVENTORY_RATING_066, STRUCTURAL_EVAL_067, 
+         ROADWAY_WIDTH_MT_051,
+         TRAFFIC_LANES_ON_028A, STRUCTURE_TYPE_043B)
+head(small.CA15)
+```
+ 
+```{r}
+#creating the plot with chosen variables
+library(ggplot2)
+small.CA15$COUNTY_CODE_003 = as.factor(small.CA15$COUNTY_CODE_003)
+ 
+ggplot(small.CA15, aes(YEAR_BUILT_027, INVENTORY_RATING_066, color = SUPERSTRUCTURE_COND_059)) + geom_point(size = 0.5) + theme_grey() + labs(x = "Year Built", y = "Inventory Rating", title = "California 2015 Bridge Data")
+```
